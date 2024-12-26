@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ActivityGraph } from '@/components/ActivityGraph'
 import image from '@/public/Worlds.webp'
+import Image from "next/image";
 
 
 export default function Home() {
@@ -15,7 +16,7 @@ export default function Home() {
           <span className="font-[family-name:var(--font-source_Serif_4)] font-semibold text-end w-[200] md:w-[400px] lg:w-[550px]">By Maurpz</span>
         </div>
         <div className="grid items-center">
-          <img src={image.src} alt="worlds" className="invert transform rotate-x-12 rotate-y-12 h-[200px]"/>
+          <Image src={image.src} height={200} width={200} alt="Logo worlds 2025" className="invert"/>
         </div>
       </div>
       <ActivityGraph/>
