@@ -35,26 +35,11 @@ interface ResumeDayFields extends EntrySkeletonType {
   };
 }
 
-const dataxd: LogDay[] = [
-  { date: "", time: 8, earnings: 100, milestones: 2, tasks: 10, state: 1 },
-  { date: "", time: 6, earnings: 80, milestones: 1, tasks: 8, state: 2 },
-  { date: "", time: 7.5, earnings: 120, milestones: 3, tasks: 12, state: 3 },
-  { date: "", time: 4, earnings: 50, milestones: 0, tasks: 5, state: 5 },
-  { date: "", time: 5, earnings: 60, milestones: 1, tasks: 7, state: 0 },
-  { date: "", time: 9, earnings: 150, milestones: 4, tasks: 15, state: 4 },
-  { date: "", time: 8.5, earnings: 130, milestones: 3, tasks: 13, state: 4 },
-  { date: "", time: 6.5, earnings: 90, milestones: 2, tasks: 9, state: 3 },
-  { date: "", time: 10, earnings: 200, milestones: 5, tasks: 18, state: 3 },
-  { date: "", time: 4.5, earnings: 40, milestones: 0, tasks: 4, state: 4 },
-  { date: "", time: 7, earnings: 110, milestones: 2, tasks: 10, state: 4 },
-  { date: "", time: 5.5, earnings: 70, milestones: 1, tasks: 6, state: 5 },
-]
-
 
 const generateDays = (days: number,dataReference: LogDay[]): CellDayData[] => {
-  let tempDate = new Date();
+  const tempDate = new Date();
   return Array.from({length: days}, (_,i) => {
-    let dataStr = `${tempDate.toLocaleString("en-US", { month: "long", day: "numeric" })}`;
+    const dataStr = `${tempDate.toLocaleString("en-US", { month: "long", day: "numeric" })}`;
     tempDate.setDate(tempDate.getDate()+1);
     if (dataReference[i]) {
       return ({day: dataStr, log: dataReference[i]})
@@ -64,24 +49,28 @@ const generateDays = (days: number,dataReference: LogDay[]): CellDayData[] => {
   });
 }
 
-const space = process.env.NEXT_PUBLIC_SPACE
-const token = process.env.API_SECRET_KEY
 
 export const ActivityGraph = () => {
   const [resumeData, setResumeData] = useState<TotalResume>({totalEarnings:0,totalMilestones:0,totalTasks:0,totalTime:0});
   const [day, setDays] = useState<CellDayData[]>([])
   const [dataDays, setDataDays] = useState<LogDay[]>([]);
-
+  const space = process.env.NEXT_PUBLIC_SPACE
+  const token = process.env.NEXT_PUBLIC_TOKEN
+  
   useEffect(() => {
+    if (!space || !token) {
+      console.error("Faltan las variables de entorno requeridas: NEXT_PUBLIC_SPACE o API_SECRET_KEY");
+      return;
+    }
     const client = createClient({
-      space: "ji4x8j4oyvk7",
-      accessToken: "e8pXMJLr93E70_3Sz3pXIXu6_Q1vSkej4kl4HnCQheI",
+      space: space,
+      accessToken: token,
     })
 
 
 
-    let startDate = new Date('2024-12-25');
-    let endDate = new Date('2025-10-16');
+    const startDate = new Date('2024-12-25');
+    const endDate = new Date('2025-10-16');
     const diferencia = endDate.getTime() - startDate.getTime();
     const miliSporDia = 1000 * 60 * 60 *24;
     const date = Math.ceil(diferencia / miliSporDia);
@@ -118,7 +107,7 @@ export const ActivityGraph = () => {
 
 
 
-  },[dataDays])
+  },[dataDays, space, token])
 
   return (
     <div className="m-auto w-[1000px]">

@@ -1,6 +1,4 @@
-'use client'
 
-import { useState } from "react";
 import { ActivityGraph } from '@/components/ActivityGraph'
 import image from '@/public/Worlds.webp'
 import Image from "next/image";
