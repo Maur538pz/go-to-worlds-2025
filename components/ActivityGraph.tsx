@@ -54,11 +54,15 @@ export const ActivityGraph = () => {
   const [resumeData, setResumeData] = useState<TotalResume>({totalEarnings:0,totalMilestones:0,totalTasks:0,totalTime:0});
   const [day, setDays] = useState<CellDayData[]>([])
   const [dataDays, setDataDays] = useState<LogDay[]>([]);
-  const space = process.env.NEXT_PUBLIC_SPACE
-  const token = process.env.NEXT_PUBLIC_TOKEN
+  // const space = process.env.NEXT_PUBLIC_SPACE;
+  // const token = process.env.NEXT_PUBLIC_TOKEN;
   
   useEffect(() => {
+    const space = process.env.NEXT_PUBLIC_SPACE;
+    const token = process.env.NEXT_PUBLIC_TOKEN;
     if (!space || !token) {
+      console.log(space);
+      console.log(token);
       console.error("Faltan las variables de entorno requeridas: NEXT_PUBLIC_SPACE o API_SECRET_KEY");
       return;
     }
@@ -107,7 +111,7 @@ export const ActivityGraph = () => {
 
 
 
-  },[dataDays, space, token])
+  },[dataDays])
 
   return (
     <div className="m-auto w-[1000px]">
